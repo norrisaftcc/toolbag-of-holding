@@ -25,15 +25,30 @@ This will compile all the Java files and start the application.
 
 ### Manual Compilation and Execution
 
-1. Compile all Java files:
+1. Create the output directory:
    ```bash
-   javac *.java
+   mkdir -p build/classes
    ```
 
-2. Run the main application:
+2. Compile all Java files:
    ```bash
-   java dndToolbag
+   javac -d build/classes src/main/java/*.java
    ```
+
+3. Run the main application:
+   ```bash
+   java -cp build/classes dndToolbag
+   ```
+
+## Running Tests
+
+To run the tests, use the included test script:
+
+```bash
+./runtests.sh
+```
+
+This will compile and run the test suite.
 
 ## Usage Guide
 
@@ -73,28 +88,55 @@ This will compile all the Java files and start the application.
 - Added JavaDoc documentation to major methods
 - Added support for multiple character sheets
 - Added automatic file backups before saving
+- Reorganized project directory structure
 
 ## Project Structure
 
-- `dndToolbag.java` - Main entry point with menu system
-- `CharSheetManager.java` - Handles reading/writing character data
-- `ScannerUtil.java` - Centralized input handling
-- Utility classes for specific D&D mechanics:
-  - `diceRoller.java` - Dice rolling functionality
-  - `rollStats.java` - Character ability score generation
-  - `hitPoints.java` - HP calculation and tracking
-  - `inventory.java` - Item management
-  - `charInfo.java` - Basic character information
-  - `charNotes.java` - Character notes management
-  - `rollToAttack.java` - Combat attack rolls and damage
+```
+toolbag-of-holding/
+├── build/                  # Compiled output
+│   ├── classes/            # Compiled application classes
+│   └── test-classes/       # Compiled test classes
+├── docs/                   # Documentation
+│   ├── CLAUDE.md           # Claude setup and guidance
+│   └── ...                 # Other documentation files
+├── src/                    # Source code
+│   ├── main/
+│   │   └── java/           # Application source files
+│   │       ├── dndToolbag.java         # Main entry point
+│   │       ├── CharSheetManager.java   # Data persistence
+│   │       ├── ScannerUtil.java        # Input handling
+│   │       └── ...                     # Other classes
+│   └── test/
+│       └── java/           # Test source files
+│           ├── ScannerUtilTest.java
+│           └── ...         # Other test classes
+├── README.md               # This file
+├── run.sh                  # Script to compile and run the app
+└── runtests.sh             # Script to run tests
+```
+
+## Core Components
+
+- **dndToolbag.java** - Main entry point with menu system
+- **CharSheetManager.java** - Handles reading/writing character data
+- **ScannerUtil.java** - Centralized input handling
+- **Utility Classes**:
+  - **diceRoller.java** - Dice rolling functionality
+  - **rollStats.java** - Character ability score generation
+  - **hitPoints.java** - HP calculation and tracking
+  - **inventory.java** - Item management
+  - **charInfo.java** - Basic character information
+  - **charNotes.java** - Character notes management
+  - **rollToAttack.java** - Combat attack rolls and damage
 
 ## File Structure
 
 Character data is stored in text files with the following sections:
-- Character Info: Name and class details
-- Hit Points: Character HP
-- Assigned Stats: Ability scores and modifiers
-- Inventory: List of items
-- Notes: Character notes and details
+- **Character Info**: Name and class details
+- **Hit Points**: Character HP
+- **Assigned Stats**: Ability scores and modifiers
+- **Inventory**: List of items
+- **Notes**: Character notes and details
 
 Character sheets are automatically backed up before each save operation.

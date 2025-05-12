@@ -42,11 +42,13 @@ All character data is stored in a single text file (charSheet.txt) with predefin
 To compile and run the project:
 
 ```bash
-# Compile all Java files
-javac *.java
+# Using the run script (recommended)
+./run.sh
 
-# Run the application
-java dndToolbag
+# Manual compilation
+mkdir -p build/classes
+javac -d build/classes src/main/java/*.java
+java -cp build/classes dndToolbag
 ```
 
 ## Development Guidance
@@ -81,6 +83,8 @@ The following improvements are planned for this project:
 - ✅ Added support for multiple character sheets
 - ✅ Created basic test framework and utilities
 - ✅ Added initial tests for ScannerUtil and CharSheetManager
+- ✅ Reorganized project into standard directory structure (src/main/java, src/test/java, docs, etc.)
+- ✅ Updated build and run scripts to work with new structure
 
 ### Remaining Tasks
 

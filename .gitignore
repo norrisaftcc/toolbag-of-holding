@@ -1,2 +1,26 @@
-**/.claude/settings.local.json
+# Compiled class files
 *.class
+
+# Build output
+/build/
+
+# Character sheet files
+*.txt
+*.bak
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+
+# Claude settings
+**/.claude/settings.local.json
+
+# macOS system files
+.DS_Store
+
+# Log files
+*.log
