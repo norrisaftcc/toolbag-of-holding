@@ -6,19 +6,19 @@ This file documents the slides that have been created and the ones that still ne
 
 1. ✅ **index.html** - Introduction slide
 2. ✅ **architecture.html** - System Architecture slide
-3. ✅ **tech-deep-dive.html** - Technical Deep Dive on ScannerUtil
+3. ✅ **character-creation.html** - Character Creation Process
+4. ✅ **play-mode.html** - Play Mode Features
+5. ✅ **tech-deep-dive.html** - Technical Deep Dive on ScannerUtil
+6. ✅ **refactoring.html** - Refactoring & Improvements
+7. ✅ **collaboration.html** - Human-AI Collaboration
 
 ## Slides To Complete
 
-1. **character-creation.html** - Character Creation Process
-2. **play-mode.html** - Play Mode Features
-3. **refactoring.html** - Refactoring & Improvements
-4. **dice-system.html** - Dice Rolling System Spotlight
-5. **data-storage.html** - Data Management & Storage
-6. **testing.html** - Testing Approach
-7. **lessons.html** - Lessons Learned & Best Practices
-8. **roadmap.html** - Future Enhancements
-9. **collaboration.html** - Human-AI Collaboration
+1. **dice-system.html** - Dice Rolling System Spotlight
+2. **data-storage.html** - Data Management & Storage
+3. **testing.html** - Testing Approach
+4. **lessons.html** - Lessons Learned & Best Practices
+5. **roadmap.html** - Future Enhancements
 
 ## How to Add New Slides
 
