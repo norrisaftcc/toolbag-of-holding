@@ -42,12 +42,13 @@ public class dndToolbag
         }
     }
 
-    private static final int ROLL = 1;
-    private static final int INVENTORY = 2;
-    private static final int CHAR_SHEET = 3;
-    private static final int TRACKER = 4;
-    private static final int COMBAT = 5;
-    private static final int BACK = 6;
+    // Play mode constants
+    private static final int PLAY_ROLL = 1;
+    private static final int PLAY_INVENTORY = 2;
+    private static final int PLAY_CHAR_SHEET = 3;
+    private static final int PLAY_TRACKER = 4;
+    private static final int PLAY_COMBAT = 5;
+    private static final int PLAY_BACK = 6;
 
     public static void playMode()
     {
@@ -66,22 +67,22 @@ public class dndToolbag
 
             switch (choice)
             {
-                case ROLL:
+                case PLAY_ROLL:
                     diceRoller.main(null);
                     break;
-                case INVENTORY:
+                case PLAY_INVENTORY:
                     inventory.main(null);
                     break;
-                case CHAR_SHEET:
+                case PLAY_CHAR_SHEET:
                     System.out.println("Call character sheet java file");
                     break;
-                case TRACKER:
+                case PLAY_TRACKER:
                     System.out.println("Call insp/hp/xp tracker");
                     break;
-                case COMBAT:
+                case PLAY_COMBAT:
                     combatMode();
                     break;
-                case BACK:
+                case PLAY_BACK:
                     running = false;
                     showMainMenu();
                     break;
@@ -92,12 +93,13 @@ public class dndToolbag
     }
 
 
-    private static final int ROLL_STATS = 1;
-    private static final int CALC_HP = 2;
-    private static final int INVENTORY = 3;
-    private static final int NOTES = 4;
-    private static final int FINISHED = 5;
-    private static final int BACK = 6;
+    // Character creation constants
+    private static final int CREATE_ROLL_STATS = 1;
+    private static final int CREATE_CALC_HP = 2;
+    private static final int CREATE_INVENTORY = 3;
+    private static final int CREATE_NOTES = 4;
+    private static final int CREATE_FINISHED = 5;
+    private static final int CREATE_BACK = 6;
 
     public static void charCreation()
     {
@@ -119,24 +121,24 @@ public class dndToolbag
 
             switch (choice)
             {
-                case ROLL_STATS:
+                case CREATE_ROLL_STATS:
                     rollStats.main(null);
                     break;
-                case CALC_HP:
+                case CREATE_CALC_HP:
                     hitPoints.main(null);
                     break;
-                case INVENTORY:
+                case CREATE_INVENTORY:
                     inventory.main(null);
                     break;
-                case NOTES:
+                case CREATE_NOTES:
                     charNotes.main(null);
                     break;
-                case FINISHED:
+                case CREATE_FINISHED:
                     System.out.println("Character creation finished.");
                     running = false;
                     playMode();
                     break;
-                case BACK:
+                case CREATE_BACK:
                     running = false;
                     showMainMenu();
                     break;
