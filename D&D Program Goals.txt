@@ -1,0 +1,35 @@
+Can i use user input to remove items from a list? Yes
+lambda functions? linking files?
+Use JOptionPane for the buttons? Look into this more
+
+
+modes: Play, Combat, and Char Creation (combat is a branch of play)
+
+Play:
+Rolling (done)
+check/add/remove items from inventory
+Check stats/mods/prof bonus
+Track inspiration/xp/hp
+Check char sheet (not complete)
+
+Combat:
+Rolling damage (done)
+Track hp/spell slots
+
+Char creation:
+Rolling stats (done)
+option to manually enter stats
+Skill mods (done)
+Prof bonus
+hp (done)
+manually enter hp
+Basically just making a character sheet
+Add starter items to inventory
+add section for notes like feats/languages/proficiencies
+How to format?
+
+framework for final program
+needs to be able to handle leveling up (so adding a point to a chosen stat and whatnot)
+
+
+Constant buttons: exit, check stats (pulls up character sheet), roll (calls roll function), inventory (allows for adding and removing items), 
