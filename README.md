@@ -89,6 +89,7 @@ This will compile and run the test suite.
 - Added support for multiple character sheets
 - Added automatic file backups before saving
 - Reorganized project directory structure
+- Created HTML presentation for project showcase (see `docs/presentation.html`)
 
 ## Project Structure
 
@@ -140,3 +141,24 @@ Character data is stored in text files with the following sections:
 - **Notes**: Character notes and details
 
 Character sheets are automatically backed up before each save operation.
+
+## Project Presentation
+
+An interactive HTML presentation is included to showcase the project features and architecture. To view the presentation:
+
+1. Open the presentation landing page:
+   ```
+   docs/presentation.html
+   ```
+
+2. Navigate through the slides using the sidebar or navigation buttons.
+
+The presentation covers:
+- Project introduction and architecture
+- Technical deep dive on key components
+- Code refactoring and improvements
+- Character creation process
+- Game mechanics implementation
+- Human-AI collaboration process
+
+Additional slides can be created following the template in `docs/presentation/SLIDES_TO_COMPLETE.md`.
