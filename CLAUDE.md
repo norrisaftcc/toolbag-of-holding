@@ -75,13 +75,14 @@ The following improvements are planned for this project:
 - ✅ Refactored diceRoller.java to eliminate code duplication
 - ✅ Added JavaDoc comments to major methods
 - ✅ Created project documentation (README, planning docs)
+- ✅ Refactored charNotes.java to use ScannerUtil
+- ✅ Refactored rollToAttack.java to eliminate duplicate dice code
+- ✅ Refactored CharSheetManager.java with better error handling and backup
+- ✅ Added support for multiple character sheets
 
 ### Remaining Tasks
 
 1. **Refactoring Completion**:
-   - Complete refactoring of charNotes.java
-   - Complete refactoring of rollToAttack.java
-   - Refactor CharSheetManager.java for better error handling
    - Complete the characterSheet.java implementation
 
 2. **Unit Testing**:
