@@ -1,151 +1,192 @@
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
-public class hitPoints 
+/**
+ * Handles character hit point calculation and tracking.
+ */
+public class hitPoints
 {
+    // Menu option constants
+    private static final int CLASS_LIST = 1;
+    private static final int CALC = 2;
 
-    public static void main(String[] args) 
-    {
-        intro();
+    // Hit die constants
+    private static final int D12 = 12;
+    private static final int D10 = 10;
+    private static final int D8 = 8;
+    private static final int D6 = 6;
+
+    // Class to hit die mapping
+    private static final Map<String, Integer> CLASS_HIT_DICE = new HashMap<>();
+
+    static {
+        // Initialize the class hit dice map
+        CLASS_HIT_DICE.put("Artificer", D8);
+        CLASS_HIT_DICE.put("Barbarian", D12);
+        CLASS_HIT_DICE.put("Bard", D8);
+        CLASS_HIT_DICE.put("Cleric", D8);
+        CLASS_HIT_DICE.put("Druid", D8);
+        CLASS_HIT_DICE.put("Fighter", D10);
+        CLASS_HIT_DICE.put("Monk", D8);
+        CLASS_HIT_DICE.put("Paladin", D10);
+        CLASS_HIT_DICE.put("Ranger", D10);
+        CLASS_HIT_DICE.put("Rogue", D8);
+        CLASS_HIT_DICE.put("Sorcerer", D6);
+        CLASS_HIT_DICE.put("Warlock", D8);
+        CLASS_HIT_DICE.put("Wizard", D6);
     }
 
-    public static void intro()
+    /**
+     * Main entry point for hit point calculation.
+     *
+     * @param args Command line arguments (not used)
+     */
+    public static void main(String[] args)
     {
-        //declaring variables
-        Scanner in = new Scanner(System.in);
-        final int CLASS_LIST = 1, CALC = 2;
+        showMenu();
+    }
 
-        //introduce program and get user input
-        System.out.print("Let's calculate your hit points!\n");
-        System.out.print("Press 1 to look at a list of hit dice for base game classes\n");
-        System.out.print("Press 2 to calculate your hit points\n");
-        System.out.print("Enter 1 or 2: ");
-        int userInput = in.nextInt();
+    /**
+     * Displays the main menu for hit point calculation.
+     */
+    public static void showMenu()
+    {
+        // Introduce program and get user input
+        System.out.println("Let's calculate your hit points!");
+        System.out.println("1. Look at a list of hit dice for base game classes");
+        System.out.println("2. Calculate your hit points");
 
-        //decision structure for next function
-        if (userInput == CLASS_LIST)
+        int userChoice = ScannerUtil.getIntInRange("Enter your choice (1-2): ", 1, 2);
+
+        if (userChoice == CLASS_LIST)
         {
             classList();
             calcHitPoints();
         }
-        else if (userInput ==  CALC)
+        else if (userChoice == CALC)
         {
             calcHitPoints();
         }
-        else 
-        {
-            System.out.print("That is not a valid input! Try again!");
-
-        }
     }
 
+    /**
+     * Displays the hit dice for each base game class.
+     */
     public static void classList()
     {
-        //help menu with hit dice for each base game class
-        System.out.println("Artificer Hit Die: d8");
-        System.out.println("Barbarian Hit Die: d12");
-        System.out.println("Bard Hit Die: d8");
-        System.out.println("Cleric Hit Die: d8");
-        System.out.println("Druid Hit Die: d8");
-        System.out.println("Fighter Hit Die: d10");
-        System.out.println("Monk Hit Die: d8");
-        System.out.println("Paladin Hit Die: d10");
-        System.out.println("Ranger Hit Die: d10");
-        System.out.println("Rogue Hit Die: d8");
-        System.out.println("Sorcerer Hit Die: d6");
-        System.out.println("Warlock Hit Die: d8");
-        System.out.println("Wizard Hit Die: d6");
+        System.out.println("\nClass Hit Dice:");
+        System.out.println("---------------");
 
+        for (Map.Entry<String, Integer> entry : CLASS_HIT_DICE.entrySet()) {
+            System.out.printf("%-10s Hit Die: d%d\n", entry.getKey(), entry.getValue());
+        }
+        System.out.println();
     }
 
+    /**
+     * Calculates hit points based on hit die and CON modifier.
+     */
     public static void calcHitPoints()
     {
-        //input for which die to use (allows for easy integration of homebrew classes)
-        //math is max roll + con mod
-        Scanner in = new Scanner(System.in);
-        System.out.println("What die do you want to roll? (ex. 20) ");
-        System.out.print("d");
-        int sidesOfDice = in.nextInt();
-        System.out.println();
+        // Get the hit die size
+        int validDice[] = {6, 8, 10, 12};
+        System.out.println("\nEnter your hit die size (must be 6, 8, 10, or 12):");
 
-        //get the con modifier
-        int conMod = getConMod();
-        int hitPoints = 0;
+        int sidesOfDice = 0;
+        boolean validInput = false;
 
-        switch (sidesOfDice) 
-        {
-            case 12:
-                hitPoints = 12 + conMod;
-                System.out.println("Your hit points are: " + hitPoints);
-                break;
-            case 10:
-                hitPoints = 10 + conMod;
-                System.out.println("Your hit points are: " + hitPoints);
-                break;
-            case 8:
-                hitPoints = 8 + conMod;
-                System.out.println("Your hit points are: " + hitPoints);
-                break;
-            case 6:
-                hitPoints = 6 + conMod;
-                System.out.println("Your hit points are: " + hitPoints);
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
-                calcHitPoints();
-                return; // Exit this method to avoid writing invalid data
-        }
+        while (!validInput) {
+            sidesOfDice = ScannerUtil.getInt("d");
 
-        addHitPoints(hitPoints);
-    }
-
-    public static int getConMod()
-    {
-        try (Scanner fileScanner = new Scanner(new java.io.File("charSheet.txt")))
-        {
-            while (fileScanner.hasNextLine()) 
-            {
-                String line = fileScanner.nextLine();
-                if (line.startsWith("CON:")) 
-                {
-                    // Extract the CON value from the line
-                    String[] parts = line.split(":");
-                    String conValueString = parts[1].trim().split(" ")[0]; // Get only the numeric part
-                    int conValue = Integer.parseInt(conValueString);
-                    return (conValue - 10) / 2; // Calculate and return the modifier
+            for (int die : validDice) {
+                if (sidesOfDice == die) {
+                    validInput = true;
+                    break;
                 }
             }
-        } 
-        catch (IOException e) 
-        {
-            System.out.println("An error occurred while reading the character sheet.");
-            e.printStackTrace();
+
+            if (!validInput) {
+                System.out.println("Invalid hit die. Please enter 6, 8, 10, or 12.");
+            }
         }
-        catch (NumberFormatException e)
-        {
-            System.out.println("Invalid CON value format in the character sheet.");
-            e.printStackTrace();
+
+        // Get the CON modifier
+        int conMod = getConMod();
+        System.out.println("CON modifier: " + conMod);
+
+        // Calculate hit points (max roll for first level + CON modifier)
+        int hitPoints = sidesOfDice + conMod;
+
+        System.out.println("Your hit points are: " + hitPoints);
+
+        // Ask if the user wants to save the hit points
+        boolean saveHP = ScannerUtil.getYesNoInput("Do you want to save these hit points to your character sheet?");
+
+        if (saveHP) {
+            addHitPoints(hitPoints);
         }
-        return 0; // Default modifier if CON is not found
     }
 
+    /**
+     * Gets the character's Constitution modifier from the character sheet.
+     *
+     * @return The CON modifier value
+     */
+    public static int getConMod()
+    {
+        try {
+            Map<String, String> sections = CharSheetManager.readCharSheet();
+            String statsSection = sections.getOrDefault("Assigned Stats", "");
+
+            // Look for CON in the stats section
+            for (String line : statsSection.split("\n")) {
+                if (line.startsWith("CON:")) {
+                    // Extract the CON value from the line
+                    String[] parts = line.split(":");
+                    if (parts.length >= 2) {
+                        String[] valueParts = parts[1].trim().split(" ");
+                        if (valueParts.length >= 1) {
+                            int conValue = Integer.parseInt(valueParts[0]);
+                            return (conValue - 10) / 2; // Calculate and return the modifier
+                        }
+                    }
+                }
+            }
+
+            // If CON not found, prompt user to enter manually
+            System.out.println("CON value not found in character sheet.");
+            return ScannerUtil.getInt("Please enter your Constitution modifier manually: ");
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred while reading the character sheet: " + e.getMessage());
+            return ScannerUtil.getInt("Please enter your Constitution modifier manually: ");
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Invalid CON value format in the character sheet.");
+            return ScannerUtil.getInt("Please enter your Constitution modifier manually: ");
+        }
+    }
+
+    /**
+     * Adds hit points to the character sheet.
+     *
+     * @param hitPoints The hit points value to save
+     */
     public static void addHitPoints(int hitPoints)
     {
-        try 
+        try
         {
             Map<String, String> sections = CharSheetManager.readCharSheet();
             sections.put("Hit Points", "Hit Points: " + hitPoints);
             CharSheetManager.writeCharSheet(sections);
-            System.out.println("Hit points successfully written to charSheet.txt!");
-        } 
-        catch (IOException e) 
+            System.out.println("Hit points successfully saved to character sheet!");
+        }
+        catch (IOException e)
         {
-            System.out.println("An error occurred while updating hit points.");
+            System.out.println("An error occurred while updating hit points: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
-    
 }

@@ -1,197 +1,188 @@
-import java.util.Scanner;
 import java.io.IOException;
 import java.io.FileWriter;
 
-public class dndToolbag 
-{    
+public class dndToolbag
+{
+    // Define constants at the class level
+    private static final int PLAY = 1;
+    private static final int CREATE = 2;
+    private static final int EXIT = 3;
+
     public static void main(String[] args)
     {
-        Scanner k = new Scanner (System.in);
-        final int PLAY = 1;
-        final int CREATE = 2;
-
-
-        System.out.println("Welcome to the Tool Bag of Holding!\n\nDo you want to play or create a character?");
-        System.out.println("1. Play\n2. Character Creation\n3. Exit");
-        System.out.print("Choose: ");
-        //int userMode = k.nextInt();
-
-        if (k.hasNextInt())
-        {
-            int userMode = k.nextInt();
-            if (userMode == PLAY)
-            {
-                playMode(k);
-            }
-            else if (userMode == CREATE)
-            {
-                charCreation(k);
-            }
-            else
-            {
-                System.out.println("Invalid input.");
-                System.out.println("1. Play\n2. Character Creation\n3. Exit");
-                userMode = k.nextInt();
-            }
+        try {
+            showMainMenu();
+        } finally {
+            // Ensure scanner is closed when application exits
+            ScannerUtil.closeScanner();
         }
-        else
-        {
-            System.out.println("Invalid input. Please enter 1 or 2.");
-        } 
     }
 
-    public static void playMode(Scanner k) 
+    private static void showMainMenu()
     {
-        final int ROLL = 1;
-        final int INVENTORY = 2;
-        final int CHAR_SHEET = 3;
-        final int TRACKER = 4;
-        final int COMBAT = 5;
-    
+        System.out.println("Welcome to the Tool Bag of Holding!\n\nDo you want to play or create a character?");
+        System.out.println("1. Play\n2. Character Creation\n3. Exit");
+
+        int userMode = ScannerUtil.getIntInRange("Choose: ", 1, 3);
+
+        switch (userMode) {
+            case PLAY:
+                playMode();
+                break;
+            case CREATE:
+                charCreation();
+                break;
+            case EXIT:
+                System.out.println("Thank you for using the Tool Bag of Holding. Goodbye!");
+                break;
+            default:
+                System.out.println("Invalid selection. Please try again.");
+                showMainMenu();
+                break;
+        }
+    }
+
+    private static final int ROLL = 1;
+    private static final int INVENTORY = 2;
+    private static final int CHAR_SHEET = 3;
+    private static final int TRACKER = 4;
+    private static final int COMBAT = 5;
+    private static final int BACK = 6;
+
+    public static void playMode()
+    {
         boolean running = true;
-    
+
         while (running) {
-            System.out.print("You are in play mode.\nYou can:\n");
+            System.out.println("You are in play mode.\nYou can:");
             System.out.println("1. Roll");
             System.out.println("2. Keep track of inventory");
             System.out.println("3. Check your character sheet");
             System.out.println("4. Track inspiration, hp, and xp");
             System.out.println("5. Enter combat");
-            System.out.print("Choose an option: ");
-    
-            if (k.hasNextInt()) 
+            System.out.println("6. Back to main menu");
+
+            int choice = ScannerUtil.getIntInRange("Choose an option: ", 1, 6);
+
+            switch (choice)
             {
-                int choice = k.nextInt();
-                k.nextLine(); // Consume newline
-    
-                switch (choice) 
-                {
-                    case ROLL:
-                        diceRoller.main(null);
-                        break;
-                    case INVENTORY:
-                        inventory.main(null);
-                        break;
-                    case CHAR_SHEET:
-                        System.out.print("Call character sheet java file");
-                        break;
-                    case TRACKER:
-                        System.out.print("Call insp/hp/xp tracker");
-                        break;
-                    case COMBAT:
-                        combatMode(k);
-                        break;
-                    default:
-                        System.out.println("Invalid input. Please try again.");
-                }
-            } 
-            else 
-            {
-                System.out.println("Invalid input. Please enter a number.");
-                k.nextLine(); // Consume invalid input
+                case ROLL:
+                    diceRoller.main(null);
+                    break;
+                case INVENTORY:
+                    inventory.main(null);
+                    break;
+                case CHAR_SHEET:
+                    System.out.println("Call character sheet java file");
+                    break;
+                case TRACKER:
+                    System.out.println("Call insp/hp/xp tracker");
+                    break;
+                case COMBAT:
+                    combatMode();
+                    break;
+                case BACK:
+                    running = false;
+                    showMainMenu();
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
             }
         }
     }
 
 
-    public static void charCreation(Scanner k) 
+    private static final int ROLL_STATS = 1;
+    private static final int CALC_HP = 2;
+    private static final int INVENTORY = 3;
+    private static final int NOTES = 4;
+    private static final int FINISHED = 5;
+    private static final int BACK = 6;
+
+    public static void charCreation()
     {
-        final int ROLL_STATS = 1;
-        final int CALC_HP = 2;
-        final int INVENTORY = 3;
-        final int NOTES = 4;
-        final int FINISHED = 5;
-    
         boolean running = true;
-    
+
         charInfo.main(null);
 
-        while (running) 
+        while (running)
         {
-            System.out.print("You are in character creation mode.\nYou can:\n");
+            System.out.println("You are in character creation mode.\nYou can:");
             System.out.println("1. Roll stats");
             System.out.println("2. Calculate HP");
             System.out.println("3. Start your inventory");
             System.out.println("4. Make notes");
             System.out.println("5. Finished");
-            System.out.print("Choose an option: ");
-    
-            if (k.hasNextInt()) 
+            System.out.println("6. Back to main menu");
+
+            int choice = ScannerUtil.getIntInRange("Choose an option: ", 1, 6);
+
+            switch (choice)
             {
-                int choice = k.nextInt();
-                k.nextLine(); // Consume newline
-    
-                switch (choice) 
-                {
-                    case ROLL_STATS:
-                        rollStats.main(null);
-                        break;
-                    case CALC_HP:
-                        hitPoints.main(null);
-                        break;
-                    case INVENTORY:
-                        inventory.main(null);
-                        break;
-                    case NOTES:
-                        charNotes.main(null);
-                        break;
-                    case FINISHED:
-                        System.out.println("Character creation finished.");
-                        running = false;
-                        playMode(k);
-                        break;
-                    default:
-                        System.out.println("Invalid input. Please try again.");
-                }
-            } 
-            else 
-            {
-                System.out.println("Invalid input. Please enter a number 1-5.");
-                k.nextLine(); // Consume invalid input
+                case ROLL_STATS:
+                    rollStats.main(null);
+                    break;
+                case CALC_HP:
+                    hitPoints.main(null);
+                    break;
+                case INVENTORY:
+                    inventory.main(null);
+                    break;
+                case NOTES:
+                    charNotes.main(null);
+                    break;
+                case FINISHED:
+                    System.out.println("Character creation finished.");
+                    running = false;
+                    playMode();
+                    break;
+                case BACK:
+                    running = false;
+                    showMainMenu();
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
             }
         }
     }
 
-    public static void combatMode(Scanner k)
+    private static final int ATTACK = 1;
+    private static final int SPELLS = 2;
+    private static final int TRACK = 3;
+    private static final int FLEE = 4;
+
+    public static void combatMode()
     {
-        //TODO
-        final int ATTACK = 1;
-        final int SPELLS = 2;
-        final int TRACK = 3;
-        final int FLEE = 4;
-
-
-        System.out.print("You are in combat mode.\nYou can:\n");
+        System.out.println("You are in combat mode.\nYou can:");
         System.out.println("1. Engage");
         System.out.println("2. Cast spells");
         System.out.println("3. Track HP and inspiration");
         System.out.println("4. Flee (exit)");
-        System.out.print("Chose an option: ");
-        int choice = k.nextInt();
 
-        if (choice == ATTACK)
-        {
-            rollToAttack.main(null);
-        }
-        else if (choice == SPELLS)
-        {
-            //TODO
-            System.out.print("Call spell tracker java file");
-        }
-        else if (choice == TRACK)
-        {
-            //TODO
-            System.out.print("Call insp/hp/xp tracker");
-        }
-        else if (choice == FLEE)
-        {
-            System.out.println("You have disengaged from combat.");
-            playMode(k);
-        }
-        else
-        {
-            System.out.println("Invalid input.");
-            combatMode(k);
+        int choice = ScannerUtil.getIntInRange("Choose an option: ", 1, 4);
+
+        switch (choice) {
+            case ATTACK:
+                rollToAttack.main(null);
+                break;
+            case SPELLS:
+                //TODO
+                System.out.println("Spell tracking not yet implemented.");
+                combatMode(); // Return to combat menu
+                break;
+            case TRACK:
+                //TODO
+                System.out.println("HP and inspiration tracking not yet implemented.");
+                combatMode(); // Return to combat menu
+                break;
+            case FLEE:
+                System.out.println("You have disengaged from combat.");
+                playMode();
+                break;
+            default:
+                System.out.println("Invalid input.");
+                combatMode();
+                break;
         }
     }
 }
