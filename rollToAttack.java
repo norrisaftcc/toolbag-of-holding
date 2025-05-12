@@ -1,205 +1,184 @@
-//import java.util.Random;
-import java.util.Scanner;
-
-public class rollToAttack 
+/**
+ * Handles attack rolls in combat, including modifiers, proficiency,
+ * and damage calculations.
+ */
+public class rollToAttack
 {
-    public static void main(String[] args) 
-    {
-        //Scanner in = new Scanner(System.in);
+    // Dice constants
+    private static final int D20 = 20;
+    private static final int D12 = 12;
+    private static final int D10 = 10;
+    private static final int D8 = 8;
+    private static final int D6 = 6;
+    private static final int D4 = 4;
 
-        //calling methods
+    /**
+     * Main entry point for attack rolling.
+     *
+     * @param args Command line arguments (not used)
+     */
+    public static void main(String[] args)
+    {
         intro();
         rollAttack();
-        //rollAgain();
     }
-    
+
+    /**
+     * Displays introduction and explains how to use the attack roller.
+     */
     public static void intro()
     {
-        //welcomes player, explains how to use the program
         System.out.println("Welcome to combat!");
         System.out.println("You'll roll for attack and add your modifiers, and a proficiency bonus if applicable.");
         System.out.println();
     }
 
+    /**
+     * Handles the attack roll process including damage calculation if the attack hits.
+     */
     public static void rollAttack()
     {
-        Scanner in = new Scanner(System.in);
-        String hit = "y";
-
-        //gather necessary information from player
-        System.out.println("What is your skill modifier? ");
-        int modifier = in.nextInt();
+        // Gather necessary information from player
+        int modifier = ScannerUtil.getInt("What is your skill modifier? ");
         System.out.println();
 
-        System.out.println("What is your proficiency bonus? (enter 0 if not applicable) ");
-        int profBonus = in.nextInt();
+        int profBonus = ScannerUtil.getInt("What is your proficiency bonus? (enter 0 if not applicable) ");
         System.out.println();
 
-        //rolls d20 for attack
-        final int SIDES = 20;
-        int roll, rollTotal = 0;
+        // Roll d20 for attack
+        int attackRoll = rollDie(D20);
+        System.out.println("Attack roll: " + attackRoll);
 
-        roll = (int)(Math.random() * SIDES) + 1;
-        System.out.println(roll);
-        rollTotal += roll;
+        // Calculate total attack value
+        int total = attackRoll + modifier + profBonus;
+        System.out.println(attackRoll + " + " + modifier + " + " + profBonus);
+        System.out.println("You rolled " + total + " to hit");
 
-        int total = rollTotal + modifier + profBonus;
-        System.out.println(rollTotal + " + " + modifier + " + " + profBonus);
-        System.out.println ("You rolled " + total);
+        // Ask if the attack hit
+        boolean hit = ScannerUtil.getYesNoInput("Did you hit?");
 
-        System.out.println("Did you hit? y/n: ");
-        hit = in.next();
-
-        if (hit.equalsIgnoreCase("y"))
+        if (hit)
         {
-            System.out.println("Roll for damage!");
-
-            System.out.println("What die do you want to roll? (ex. d12) ");
-            String sidesOfDice = in.next();
-            System.out.println();
-
-            System.out.println("How many dice do you want to roll? ");
-            int numOfDice = in.nextInt();
-            System.out.println();
-            
-            getDice(sidesOfDice, numOfDice);
+            rollDamage();
         }
-        else if (!hit.equalsIgnoreCase("y"))
+        else
         {
             System.out.println("Better luck next time!");
-        }
 
-        in.close();
-    }
-
-    public static void getDice(String sidesOfDice, int numOfDice)
-    {
-        //determines which method to call based on player input
-        switch (sidesOfDice)
-        {
-            case "d12":
-                d12(numOfDice);
-                break;
-            case "d10":
-                d10(numOfDice);
-                break;
-            case "d8":
-                d8(numOfDice);
-                break;
-            case "d6":
-                d6(numOfDice);
-                break;
-            case "d4":
-                d4(numOfDice);
-                break;
-            default:
-                System.out.println("Invalid input. Please try again.");
-                getDice(sidesOfDice, numOfDice);
+            // Ask if player wants to roll again
+            boolean rollAgain = ScannerUtil.getYesNoInput("Would you like to make another attack roll?");
+            if (rollAgain) {
+                System.out.println();
+                rollAttack();
+            } else {
+                System.out.println("Returning to combat menu.");
+            }
         }
     }
 
-    public static void d12 (int numOfDice)
+    /**
+     * Handles damage roll after a successful hit.
+     */
+    private static void rollDamage()
     {
-        final int SIDES = 12;
-        int roll, i, rollTotal = 0;
+        System.out.println("Roll for damage!");
 
-        for (i = 0; i < numOfDice; i++)
+        // Get damage die type
+        String dieName = ScannerUtil.getString("What die do you want to roll? (ex. d12) ");
+        System.out.println();
+
+        // Parse the die type
+        int sides = parseDieType(dieName);
+        if (sides == 0) {
+            System.out.println("Invalid die type. Valid options are d4, d6, d8, d10, or d12.");
+            rollDamage();
+            return;
+        }
+
+        // Get number of dice to roll
+        int numOfDice = ScannerUtil.getInt("How many dice do you want to roll? ");
+        System.out.println();
+
+        // Roll for damage
+        rollDamage(sides, numOfDice);
+    }
+
+    /**
+     * Parses a die name (e.g. "d6") into the number of sides.
+     *
+     * @param dieName String representation of the die type
+     * @return The number of sides, or 0 if invalid
+     */
+    private static int parseDieType(String dieName) {
+        dieName = dieName.toLowerCase().trim();
+
+        // Handle both "d12" and "12" formats
+        if (dieName.startsWith("d")) {
+            dieName = dieName.substring(1);
+        }
+
+        try {
+            int sides = Integer.parseInt(dieName);
+            if (sides == 4 || sides == 6 || sides == 8 || sides == 10 || sides == 12) {
+                return sides;
+            }
+        } catch (NumberFormatException e) {
+            // Do nothing, will return 0 below
+        }
+
+        return 0;
+    }
+
+    /**
+     * Rolls damage dice and displays the result.
+     *
+     * @param sides Number of sides on the damage die
+     * @param numOfDice Number of dice to roll
+     */
+    private static void rollDamage(int sides, int numOfDice)
+    {
+        int rollTotal = 0;
+
+        System.out.println("Rolling " + numOfDice + "d" + sides + " for damage:");
+
+        for (int i = 0; i < numOfDice; i++)
         {
-            roll = (int)(Math.random() * SIDES) + 1;
-            System.out.println(roll);
+            int roll = rollDie(sides);
+            System.out.println("Die " + (i+1) + ": " + roll);
             rollTotal += roll;
         }
 
-        System.out.println ("You rolled " + rollTotal);
-        rollAgain();
+        System.out.println("Total damage: " + rollTotal);
+
+        // Ask if player wants to roll again
+        askRollAgain();
     }
 
-    public static void d10 (int numOfDice)
-    {
-        final int SIDES = 10;
-        int roll, i, rollTotal = 0;
-
-        for (i = 0; i < numOfDice; i++)
-        {
-            roll = (int)(Math.random() * SIDES) + 1;
-            System.out.println(roll);
-            rollTotal += roll;
-        }
-
-        System.out.println ("You rolled " + rollTotal);
-        rollAgain();
+    /**
+     * Rolls a single die of the specified size.
+     *
+     * @param sides Number of sides on the die
+     * @return The result of the die roll (1 to sides)
+     */
+    private static int rollDie(int sides) {
+        return (int)(Math.random() * sides) + 1;
     }
 
-    public static void d8 (int numOfDice)
+    /**
+     * Asks the user if they want to roll again and handles the response.
+     */
+    private static void askRollAgain()
     {
-        final int SIDES = 8;
-        int roll, i, rollTotal = 0;
+        boolean rollAgain = ScannerUtil.getYesNoInput("Would you like to make another attack roll?");
 
-        for (i = 0; i < numOfDice; i++)
-        {
-            roll = (int)(Math.random() * SIDES) + 1;
-            System.out.println(roll);
-            rollTotal += roll;
-        }
-
-        System.out.println ("You rolled " + rollTotal);
-        rollAgain();
-    }
-
-    public static void d6 (int numOfDice)
-    {
-        final int SIDES = 6;
-        int roll, i, rollTotal = 0;
-
-        for (i = 0; i < numOfDice; i++)
-        {
-            roll = (int)(Math.random() * SIDES) + 1;
-            System.out.println(roll);
-            rollTotal += roll;
-        }
-
-        System.out.println ("You rolled " + rollTotal);
-        rollAgain();
-    }
-
-    public static void d4 (int numOfDice)
-    {
-        final int SIDES = 4;
-        int roll, i, rollTotal = 0;
-
-        for (i = 0; i < numOfDice; i++)
-        {
-            roll = (int)(Math.random() * SIDES) + 1;
-            System.out.println(roll);
-            rollTotal += roll;
-        }
-
-        System.out.println ("You rolled " + rollTotal);
-        rollAgain();
-    }
-
-    public static void rollAgain()
-    {
-        Scanner in = new Scanner(System.in);
-
-        System.out.println("Would you like to roll again? (yes/no) ");
-        String answer = in.nextLine();
-
-        if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y"))
+        if (rollAgain)
         {
             System.out.println();
             rollAttack();
         }
-        else if (answer.equalsIgnoreCase("no") || answer.equalsIgnoreCase("n"))
-        {
-            System.out.println("Thank you for using the dice roller!");
-        }
         else
         {
-            System.out.println("Invalid input. Please try again.");
-            rollAgain();
+            System.out.println("Returning to combat menu.");
         }
-
-        in.close();
     }
 }
