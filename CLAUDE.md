@@ -67,26 +67,41 @@ When working on this codebase:
 
 The following improvements are planned for this project:
 
-1. **Unit Testing**:
-   - Add JUnit tests for each utility class
+### Completed Items
+- ✅ Added centralized ScannerUtil class for input handling
+- ✅ Fixed Scanner resource leaks in multiple files
+- ✅ Improved error handling with specific error messages
+- ✅ Added input validation throughout the application
+- ✅ Refactored diceRoller.java to eliminate code duplication
+- ✅ Added JavaDoc comments to major methods
+- ✅ Created project documentation (README, planning docs)
+
+### Remaining Tasks
+
+1. **Refactoring Completion**:
+   - Complete refactoring of charNotes.java
+   - Complete refactoring of rollToAttack.java
+   - Refactor CharSheetManager.java for better error handling
+   - Complete the characterSheet.java implementation
+
+2. **Unit Testing**:
+   - Set up JUnit testing environment
+   - Add tests for ScannerUtil class
    - Create test fixtures for CharSheetManager
    - Implement test cases for dice rolling accuracy
    - Add tests for character stat calculations
 
-2. **Code Improvements**:
-   - Complete the characterSheet.java implementation
+3. **Features**:
    - Implement spell tracking functionality in combat mode
-   - Address Scanner resource leaks (ensure proper closing)
-   - Handle exceptions more gracefully
    - Add character leveling mechanics
-
-3. **User Experience**:
-   - Improve input validation
-   - Add confirmation prompts for critical actions
-   - Implement a help system
    - Add save/load functionality for multiple characters
 
-4. **Documentation**:
-   - Add JavaDoc comments to methods
-   - Create user documentation
-   - Document file format structure
+4. **User Experience**:
+   - Add confirmation prompts for critical actions
+   - Implement a help system
+   - Improve character sheet formatting
+
+5. **Architecture Improvements**:
+   - Convert to proper object-oriented design
+   - Create object models for Character, Inventory, etc.
+   - Separate UI code from business logic
