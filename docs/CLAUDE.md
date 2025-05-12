@@ -85,31 +85,42 @@ The following improvements are planned for this project:
 - ✅ Added initial tests for ScannerUtil and CharSheetManager
 - ✅ Reorganized project into standard directory structure (src/main/java, src/test/java, docs, etc.)
 - ✅ Updated build and run scripts to work with new structure
+- ✅ Created interactive HTML presentation for project showcase
+- ✅ Added run scripts to handle Java path settings
 
 ### Remaining Tasks
 
 1. **Refactoring Completion**:
    - Complete the characterSheet.java implementation
+   - Complete remaining HTML presentation slides
 
-2. **Unit Testing Enhancements**:
-   - Add JUnit library for proper test assertions
+2. **Unit Testing Implementation**:
+   - Add JUnit library integration
    - Create tests for remaining utility classes
    - Add test coverage reporting
    - Create test fixtures for CharSheetManager
    - Implement test cases for dice rolling accuracy
    - Add tests for character stat calculations
 
-3. **Features**:
+3. **Feature Development**:
    - Implement spell tracking functionality in combat mode
    - Add character leveling mechanics
-   - Add save/load functionality for multiple characters
+   - Enhance save/load functionality for multiple characters
+   - Create character export/import functionality
 
-4. **User Experience**:
+4. **User Experience Improvements**:
    - Add confirmation prompts for critical actions
    - Implement a help system
    - Improve character sheet formatting
+   - Add command history for frequently used actions
 
-5. **Architecture Improvements**:
+5. **Architecture Enhancements**:
    - Convert to proper object-oriented design
    - Create object models for Character, Inventory, etc.
    - Separate UI code from business logic
+   - Implement design patterns for better maintainability
+
+6. **Documentation**:
+   - Complete comprehensive JavaDoc documentation
+   - Create user guide with examples
+   - Add developer guide for contributors
