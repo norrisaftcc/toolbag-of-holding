@@ -79,15 +79,18 @@ The following improvements are planned for this project:
 - ✅ Refactored rollToAttack.java to eliminate duplicate dice code
 - ✅ Refactored CharSheetManager.java with better error handling and backup
 - ✅ Added support for multiple character sheets
+- ✅ Created basic test framework and utilities
+- ✅ Added initial tests for ScannerUtil and CharSheetManager
 
 ### Remaining Tasks
 
 1. **Refactoring Completion**:
    - Complete the characterSheet.java implementation
 
-2. **Unit Testing**:
-   - Set up JUnit testing environment
-   - Add tests for ScannerUtil class
+2. **Unit Testing Enhancements**:
+   - Add JUnit library for proper test assertions
+   - Create tests for remaining utility classes
+   - Add test coverage reporting
    - Create test fixtures for CharSheetManager
    - Implement test cases for dice rolling accuracy
    - Add tests for character stat calculations
